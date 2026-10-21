@@ -155,3 +155,54 @@ footer{padding:22px 0;font-size:.88rem;color:var(--muted)}
 .globe{position:relative;aspect-ratio:1;background:var(--surface);border:1px solid var(--line);overflow:hidden}
 .globe canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
 .globe-hint{font-size:.88rem;color:var(--muted)}
+
+/* Accessibility enhancements: keep the existing visual language, improve link clarity and status contrast. */
+:root { --trace-ink: #76150f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --trace-ink: #ff6259; }
+}
+:root[data-theme="dark"] { --trace-ink: #ff6259; }
+
+/* Keep a high-visibility keyboard indicator on every interactive element. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* The original trace red is decorative; status text uses a contrast-safe shade. */
+.status { color: var(--trace-ink); }
+
+/* Source and demo links stay text links, visually separated without introducing new button styles. */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  margin-top: 12px;
+}
+.project-links .project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: .92rem;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.project-links .project-link:hover { color: var(--accent); }
+.project-links .project-link span { font-size: 1em; }
+
+/* Honour reduced-motion preferences for CSS-driven transitions, reveals and scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  html, body { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+    scroll-timeline: none !important;
+  }
+  .hero h1 .c { will-change: auto; }
+}

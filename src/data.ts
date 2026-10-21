@@ -5,6 +5,7 @@ export interface Project {
   blurb: string;
   tags: string[];
   href: string;
+  liveHref?: string;
   badge?: string;
   highlights?: string[];
 }
@@ -27,7 +28,7 @@ export interface EducationEvent {
 
 export const profile = {
   name: "Subash Balaji S",
-  role: "Generative AI and backend engineer. I build LLM-powered multi-agent systems, RAG applications and production-ready REST APIs.",
+  role: "Backend-focused software engineer building APIs and AI-powered applications with Python, FastAPI, PostgreSQL, and LangGraph.",
 };
 
 export const navItems = [
@@ -40,16 +41,16 @@ export const navItems = [
 
 export const stackGroups: StackGroup[] = [
   {
-    title: "Generative AI",
-    items: ["LangChain", "LangGraph", "Gemini", "Groq", "OpenAI API", "Chroma", "Tavily", "RAG"],
+    title: "AI Engineering",
+    items: ["LangChain", "LangGraph", "Google Gemini", "Groq", "RAG", "Tavily", "Tool-calling agents"],
   },
   {
-    title: "Backend",
-    items: ["Python", "FastAPI", "Pydantic v2", "JWT / OAuth2", "RBAC", "Celery", "Redis"],
+    title: "Backend and APIs",
+    items: ["Python", "FastAPI", "REST API design", "Pydantic", "JWT authentication", "Role-based access control", "SQLAlchemy"],
   },
   {
     title: "Data and DevOps",
-    items: ["PostgreSQL", "SQLAlchemy", "Alembic", "Docker", "GitHub Actions", "AWS", "Render"],
+    items: ["PostgreSQL", "pgvector", "Alembic", "Redis", "Docker", "GitHub Actions", "pytest", "Render"],
   },
   {
     title: "Frontend",
@@ -57,127 +58,128 @@ export const stackGroups: StackGroup[] = [
   },
   {
     title: "Languages",
-    items: ["Python", "JavaScript", "TypeScript", "SQL", "C", "C++", "Bash"],
+    items: ["Python", "SQL", "JavaScript", "TypeScript", "C", "C++", "Bash"],
   },
 ];
 
-// EDIT: the repo links currently point at your GitHub repositories page.
-// Replace each href with the exact repo URL (https://github.com/sxb05/<repo-name>).
-const REPOS = "https://github.com/sxb05?tab=repositories";
-
 export const featuredProjects: Project[] = [
   {
-    badge: "Multi-agent",
-    title: "Multi-Agent Research System",
+    badge: "Live · Full-stack RAG",
+    title: "PageTrail — Document-aware AI assistant",
     blurb:
-      "A modular research pipeline where agents search the web, synthesise a report and then critique it, delivered as a Streamlit app.",
+      "A deployed full-stack assistant for chatting with uploaded documents, searching the web, and maintaining conversation context across sessions.",
     highlights: [
-      "Combines autonomous web search, LLM report synthesis (Gemini and Groq) and a critical-review agent. Estimated 80% less manual research effort.",
-      "Orchestrates 4+ AI tools through LangChain's agent framework and exports structured Markdown reports, using prompt engineering to control reasoning and output format.",
+      "Accepts PDF, DOCX, TXT, and Markdown documents and uses retrieval-augmented generation to ground responses in uploaded content.",
+      "Built with FastAPI, React, TypeScript, LangGraph, Google Gemini, Supabase PostgreSQL, and pgvector; optional web search is powered by Tavily.",
+      "Includes authentication and user-scoped data-access checks for conversations and document retrieval, with security and isolation tests in the development workflow.",
     ],
-    tags: ["Python", "LangChain", "Gemini", "Groq", "Tavily", "Streamlit", "Trafilatura"],
-    href: REPOS,
+    tags: ["FastAPI", "React", "TypeScript", "LangGraph", "Gemini", "PostgreSQL", "pgvector", "Tavily"],
+    href: "https://github.com/sxb05/Pagetrail",
+    liveHref: "https://pagetrail.onrender.com",
   },
   {
-    badge: "Full-stack RAG",
-    title: "HelloGPT: RAG-powered AI assistant",
+    badge: "Live · Multi-agent workflow",
+    title: "Multi-Agent Research System",
     blurb:
-      "A document-grounded assistant with a FastAPI backend and a React + TypeScript frontend, orchestrated with LangGraph.",
+      "A research workspace that turns a question into a sourced report, then sends the draft through a separate review step.",
     highlights: [
-      "LangGraph coordinates Gemini with Tavily web search and long-term memory tools.",
-      "RAG pipeline parses PDF, DOCX, TXT and Markdown uploads, chunks and embeds them with Gemini into Chroma, and retrieves context scoped to each conversation thread.",
-      "JWT authentication with expiring tokens; users, conversations, messages and agent checkpoints persist with SQLAlchemy and SQLite behind 10 REST endpoints.",
+      "Coordinates web search with Tavily, content extraction with Trafilatura, report generation with Gemini, and an LLM-based critique step.",
+      "Provides separate views for sources, notes, the report, and the critique; the application is packaged with Docker for deployment.",
     ],
-    tags: ["FastAPI", "LangGraph", "Gemini", "Chroma", "SQLAlchemy", "React", "TypeScript"],
-    href: REPOS,
+    tags: ["Python", "React", "FastAPI", "LangChain", "Gemini", "Tavily", "Trafilatura", "Docker"],
+    href: "https://github.com/sxb05/Multi-Agent_Research_sys",
+    liveHref: "https://multi-agent-research-sys-72wp.onrender.com",
   },
 ];
 
 export const cardiohemo = {
-  badge: "Team project · I lead the AI backend",
-  title: "CardioHemo: agentic explainable AI for non-invasive CVD risk prediction",
+  badge: "In progress · Team project · AI backend lead",
+  title: "CardioHemo — Explainable cardiovascular risk research",
   summary:
-    "A framework that predicts cardiovascular risk from five vital signs and explains why. A LangGraph agent routes each case through a distilled student model, a physics-based CFD surrogate, an ML ensemble with SHAP explanations, and a retrieval step, then produces a prognosis.",
-  orchestrator: "LangGraph agent · 7-node StateGraph · FastAPI service",
+    "A research prototype exploring how clinical measurements and hemodynamic indicators can support cardiovascular risk assessment. The planned agent workflow combines predictive models, a physics-informed CFD surrogate, SHAP-based explanations, and retrieved clinical context to produce an interpretable summary.",
+  orchestrator: "LangGraph workflow · FastAPI service · Explainable ML",
   pipeline: [
-    { label: "5 vitals", note: "input" },
+    { label: "Clinical inputs", note: "patient measurements" },
     { label: "Student model", note: "knowledge distillation" },
-    { label: "CFD surrogate", note: "Windkessel + ROM" },
-    { label: "Ensemble", note: "ML + SHAP" },
-    { label: "Retrieval", note: "RAG on ChromaDB" },
-    { label: "Prognosis", note: "SYNTAX / GRACE" },
+    { label: "CFD surrogate", note: "physics-informed features" },
+    { label: "ML ensemble", note: "risk estimate + SHAP" },
+    { label: "Retrieval", note: "supporting context" },
+    { label: "Risk summary", note: "interpretable output" },
   ] as PipelineStep[],
-  tags: ["LangGraph", "FastAPI", "ChromaDB", "SHAP", "OpenFOAM", "Groq Llama 3.3 70B", "Claude Sonnet"],
-  note: "In active development with a four-person team.",
+  tags: ["LangGraph", "FastAPI", "SHAP", "OpenFOAM", "ChromaDB", "Python"],
+  note: "Active team project; research and integration are ongoing.",
 };
 
 export const projects: Project[] = [
   {
+    badge: "Live · Tool-calling assistant",
     title: "LangChain AI Assistant",
     blurb:
-      "A conversational assistant with persistent session memory for multi-turn dialogue, deployed on Render with a Streamlit interface. Two real-time tools (Tavily web search, Weatherstack weather) with graceful fallbacks when API keys are missing.",
-    tags: ["Python", "LangChain", "Gemini", "Streamlit"],
-    href: REPOS,
+      "A conversational assistant with persistent session memory and two external tools: Tavily web search and Weatherstack weather lookup. It is deployed on Render with a Streamlit interface and graceful fallbacks when optional API keys are unavailable.",
+    tags: ["Python", "LangChain", "Gemini", "Streamlit", "Tavily", "Weatherstack"],
+    href: "https://github.com/sxb05/LANGCHAIN_AGENT",
+    liveHref: "https://langchain-agent-p2z5.onrender.com/",
   },
   {
-    title: "Products Management REST API",
+    badge: "Learning in public",
+    title: "FastAPI Backend Engineering",
     blurb:
-      "A RESTful API with full CRUD, Pydantic v2 validation, query filtering, JWT authentication and role-based access control. PostgreSQL with SQLAlchemy and Alembic migrations, Swagger docs, and Docker Compose with GitHub Actions CI/CD.",
-    tags: ["FastAPI", "PostgreSQL", "Docker", "GitHub Actions"],
-    href: REPOS,
+      "A public learning repository documenting hands-on practice with Python, FastAPI, PostgreSQL, and backend development fundamentals.",
+    tags: ["Python", "FastAPI", "PostgreSQL", "REST APIs"],
+    href: "https://github.com/sxb05/backend-with-fastapi",
   },
 ];
 
 export const education: EducationEvent[] = [
   {
     when: "2024 – 2028 · Bengaluru",
-    title: "BE, Medical Electronics Engineering — Dayananda Sagar College of Engineering",
-    detail: "GPA 8.0/10. Editor of the department newsletter.",
+    title: "Bachelor of Engineering, Medical Electronics — Dayananda Sagar College of Engineering",
+    detail: "GPA: 8.0/10. Editor of the department newsletter.",
   },
   {
     when: "In progress",
-    title: "Data Structures and Algorithms specialization — UC San Diego",
-    detail: "Building algorithmic fundamentals for backend and systems work.",
+    title: "Data Structures and Algorithms Specialization — UC San Diego",
+    detail: "Strengthening algorithmic problem-solving and core computer science fundamentals.",
+  },
+  {
+    when: "In progress",
+    title: "CS50: Introduction to Programming with Python",
+    detail: "Building a stronger foundation in Python programming.",
+  },
+  {
+    when: "Coursework / fundamentals",
+    title: "AWS Solutions Architect Fundamentals",
+    detail: "Cloud architecture fundamentals covering EC2, S3, IAM, VPC, and RDS.",
   },
   {
     when: "2024",
-    title: "AWS Solutions Architect – Fundamentals — Amazon Web Services",
-    detail: "Studied EC2, S3, IAM, VPC and RDS.",
-  },
-  {
-    when: "Completed",
-    title: "CS50: Introduction to Programming with Python — Harvard University",
-    detail: "The foundation for my Python-first approach.",
-  },
-  {
-    when: "2024",
-    title: "Programming with C and Working with Excel — Infosys Springboard",
+    title: "Infosys Springboard — Programming with C and Working with Excel",
     detail: "Programming fundamentals in C and spreadsheet skills.",
   },
 ];
 
 export const about = {
-  heading: "Engineering for signals that matter",
+  heading: "Building dependable backends and useful AI applications",
   paragraphs: [
-    "I'm an engineering student building LLM-powered multi-agent systems, RAG applications and production-ready REST APIs with Python, FastAPI and LangChain, and deploying them as containerised services with Docker and CI/CD.",
-    "I study Medical Electronics at Dayananda Sagar College of Engineering in Bengaluru, which is why my current focus is healthcare AI: I lead the AI backend for CardioHemo, a team project on explainable cardiovascular risk prediction.",
+    "I'm an engineering student focused on backend and software engineering. I build with Python, FastAPI, PostgreSQL, SQLAlchemy, Docker, and testing/CI workflows, while applying LangChain and LangGraph to AI assistants, retrieval pipelines, and multi-agent applications.",
+    "My Medical Electronics background also shapes my interest in healthcare AI. I lead the AI backend for CardioHemo, an ongoing team research project exploring explainable cardiovascular risk assessment with machine learning and physics-informed signals.",
   ],
   facts: [
-    { label: "Based in", value: "Jayanagar, Bengaluru" },
+    { label: "Based in", value: "Bengaluru, India" },
     { label: "Studying", value: "BE, Medical Electronics (2024–2028)" },
-    { label: "Also", value: "Editor, department newsletter" },
+    { label: "Focus", value: "Backend engineering · AI applications" },
   ],
 };
 
 export const contact = {
   heading: "Let's work together",
-  text: "I'm building scalable, AI-driven backend products and always open to meaningful conversations. Send me a note and I'll reply.",
+  text: "I'm looking for opportunities to build reliable backend services and practical AI products. Feel free to reach out about internships, open-source work, or engineering projects.",
   links: [
     { label: "Email me", href: "mailto:subashbalaji.god@gmail.com", main: true },
     { label: "GitHub", href: "https://github.com/sxb05" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/subashbalaji--/" },
     { label: "LeetCode", href: "https://leetcode.com/u/subashbalaji/" },
     { label: "NeetCode", href: "https://neetcode.io/user/CyberPotara264" },
-    { label: "Résumé", href: `${import.meta.env.BASE_URL}resume.pdf` },
+    { label: "Résumé", href: `${import.meta.env.BASE_URL}Subash_backend.pdf` },
   ] as { label: string; href: string; main?: boolean }[],
 };

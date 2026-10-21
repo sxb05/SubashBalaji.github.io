@@ -1,130 +1,109 @@
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useReducedMotion } from "motion/react";
-import type { Variants } from "motion/react";
 import { cardiohemo, featuredProjects, projects } from "../data";
 import type { Project } from "../data";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const ease = [0.2, 0.8, 0.2, 1] as const;
-const cards: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
-const card: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
-};
-
-function FeaturedProject({ project, index }: { project: Project; index: number }) {
+function ProjectLinks({ project }: { project: Project }) {
   return (
-    <article className="feature">
-      <div>
-        <span className="badge">
-          {String(index).padStart(2, "0")} · {project.badge}
-        </span>
-        <h3>{project.title}</h3>
-        <p className="summary">{project.blurb}</p>
-      </div>
-      <ul className="hl">
-        {project.highlights?.map((h) => (
-          <li key={h.slice(0, 28)}>{h}</li>
-        ))}
-      </ul>
-      <ul className="chips">
-        {project.tags.map((t) => (
-          <li key={t}>{t}</li>
-        ))}
-      </ul>
-      <a className="link" href={project.href} target="_blank" rel="noopener noreferrer">
-        View on GitHub
+    <nav className="project-links" aria-label={`Links for ${project.title}`}>
+      {project.liveHref && (
+        <a
+          className="link project-link"
+          href={project.liveHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open the live demo for ${project.title} in a new tab`}
+        >
+          Live Demo <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      <a
+        className="link project-link"
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`View the source code for ${project.title} on GitHub in a new tab`}
+      >
+        Source Code <span aria-hidden="true">↗</span>
       </a>
-    </article>
+    </nav>
   );
 }
 
 export default function Projects() {
-  const reduce = !!useReducedMotion();
-  const flowRef = useRef<HTMLDivElement>(null);
-
-  // GSAP ScrollTrigger: pipeline steps light up in sequence as you scroll past
-  useEffect(() => {
-    const flow = flowRef.current;
-    if (reduce || !flow) return;
-    const ctx = gsap.context(() => {
-      const steps = gsap.utils.toArray<HTMLElement>(".step:not(.orch)");
-      gsap
-        .timeline({
-          scrollTrigger: { trigger: flow, start: "top 85%", end: "bottom 55%", scrub: 0.6 },
-        })
-        .from(".orch", { opacity: 0.3, duration: 0.4 })
-        .from(steps, { opacity: 0.2, y: 14, duration: 0.4, stagger: 0.35 });
-    }, flow);
-    return () => ctx.revert();
-  }, [reduce]);
-
   return (
-    <section id="work">
+    <section id="work" aria-labelledby="projects-heading">
       <div className="wrap">
-        <h2>Projects</h2>
-        <p className="lede">Multi-agent systems, RAG applications and production-style APIs, starting with the ones I'm proudest of.</p>
+        <h2 id="projects-heading">Selected Work</h2>
+        <p className="lede">
+          Backend engineering, document-aware AI, and multi-agent workflows built through hands-on projects.
+        </p>
 
-        {featuredProjects.map((p, i) => (
-          <FeaturedProject key={p.title} project={p} index={i + 1} />
+        {featuredProjects.map((project) => (
+          <article className="feature" key={project.title}>
+            <div>
+              {project.badge && <span className="badge">{project.badge}</span>}
+              <h3>{project.title}</h3>
+              <p className="summary">{project.blurb}</p>
+            </div>
+
+            {project.highlights && project.highlights.length > 0 && (
+              <ul className="hl" aria-label={`${project.title} highlights`}>
+                {project.highlights.map((highlight) => (
+                  <li key={highlight}>{highlight}</li>
+                ))}
+              </ul>
+            )}
+
+            <ul className="chips" aria-label={`${project.title} technologies`}>
+              {project.tags.map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
+            <ProjectLinks project={project} />
+          </article>
         ))}
 
-        <article className="feature">
+        <article className="feature" aria-labelledby="cardiohemo-heading">
           <div>
-            <span className="badge">03 · {cardiohemo.badge}</span>
-            <h3>{cardiohemo.title}</h3>
+            <span className="badge">{cardiohemo.badge}</span>
+            <h3 id="cardiohemo-heading">{cardiohemo.title}</h3>
             <p className="summary">{cardiohemo.summary}</p>
           </div>
-          <div className="flow" ref={flowRef} role="list" aria-label="CardioHemo pipeline">
-            <div className="step orch" role="listitem">
-              {cardiohemo.orchestrator}
+
+          <div className="flow" aria-label="CardioHemo planned inference workflow">
+            <div className="step orch">
+              <span>{cardiohemo.orchestrator}</span>
             </div>
-            {cardiohemo.pipeline.map((s) => (
-              <div className="step" role="listitem" key={s.label}>
-                {s.label}
-                <small>{s.note}</small>
+            {cardiohemo.pipeline.map((step) => (
+              <div className="step" key={step.label}>
+                <span>{step.label}</span>
+                <small>{step.note}</small>
               </div>
             ))}
           </div>
-          <ul className="chips">
-            {cardiohemo.tags.map((t) => (
-              <li key={t}>{t}</li>
+
+          <ul className="chips" aria-label="CardioHemo technologies">
+            {cardiohemo.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
             ))}
           </ul>
           <p className="note">{cardiohemo.note}</p>
         </article>
 
-        <motion.div
-          className="grid"
-          variants={cards}
-          initial={reduce ? false : "hidden"}
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-        >
-          {projects.map((p) => (
-            <motion.article
-              className="card"
-              key={p.title}
-              variants={card}
-              whileHover={reduce ? undefined : { y: -6 }}
-              transition={{ type: "spring", stiffness: 420, damping: 24 }}
-            >
-              <h3>{p.title}</h3>
-              <p>{p.blurb}</p>
-              <ul className="chips">
-                {p.tags.map((t) => (
-                  <li key={t}>{t}</li>
+        <div className="grid" aria-label="Additional projects">
+          {projects.map((project) => (
+            <article className="card" key={project.title}>
+              {project.badge && <span className="status">{project.badge}</span>}
+              <h3>{project.title}</h3>
+              <p>{project.blurb}</p>
+              <ul className="chips" aria-label={`${project.title} technologies`}>
+                {project.tags.map((tag) => (
+                  <li key={tag}>{tag}</li>
                 ))}
               </ul>
-              <a className="link" href={p.href} target="_blank" rel="noopener noreferrer">
-                View on GitHub
-              </a>
-            </motion.article>
+              <ProjectLinks project={project} />
+            </article>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
