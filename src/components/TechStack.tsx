@@ -5,7 +5,6 @@ import type { Variants } from "motion/react";
 import { stackGroups } from "../data";
 
 const ease = [0.2, 0.8, 0.2, 1] as const;
-
 const grid: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 const group: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -15,16 +14,14 @@ const tile: Variants = {
   hidden: { opacity: 0, x: -12 },
   show: { opacity: 1, x: 0, transition: { duration: 0.45, ease } },
 };
-
 const monogram = (name: string) => name.replace(/[^A-Za-z]/g, "").slice(0, 2);
 
 export default function TechStack() {
   const reduce = !!useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const names = stackGroups.flatMap((g) => g.items);
-  const loop = reduce ? names : [...names, ...names]; // duplicated so the -50% shift loops seamlessly
+  const loop = reduce ? names : [...names, ...names];
 
-  // GSAP: endless marquee that eases to a stop on hover
   useEffect(() => {
     const track = trackRef.current;
     if (reduce || !track) return;
@@ -45,39 +42,23 @@ export default function TechStack() {
   return (
     <section id="stack">
       <div className="wrap">
-        <h2>Tech stack</h2>
-        <p className="lede">The tools I use to build agent systems, services and the data layers under them.</p>
-
+        <div className="section-heading">
+          <div><p className="eyebrow">02 / TOOLKIT</p><h2>What I work with<span>.</span></h2></div>
+          <p className="lede">Tools I’ve used in projects and the foundations I’m actively developing across backend, infrastructure and AI applications.</p>
+        </div>
         <div className="marquee" aria-hidden="true">
           <div className="track" ref={trackRef}>
-            {loop.map((n, i) => (
-              <span key={`${n}-${i}`}>{n}</span>
-            ))}
+            {loop.map((n, i) => <span key={`${n}-${i}`}>{n}</span>)}
           </div>
         </div>
-
-        <motion.div
-          className="stack-grid"
-          variants={grid}
-          initial={reduce ? false : "hidden"}
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-        >
+        <motion.div className="stack-grid" variants={grid} initial={reduce ? false : "hidden"} whileInView="show" viewport={{ once: true, amount: 0.15 }}>
           {stackGroups.map((g) => (
             <motion.div className="group" key={g.title} variants={group}>
               <h3>{g.title}</h3>
               <ul>
                 {g.items.map((item) => (
-                  <motion.li
-                    key={item}
-                    variants={tile}
-                    whileHover={reduce ? undefined : { y: -3 }}
-                    transition={{ type: "spring", stiffness: 420, damping: 24 }}
-                  >
-                    <span className="mono" aria-hidden="true">
-                      {monogram(item)}
-                    </span>
-                    {item}
+                  <motion.li key={item} variants={tile} whileHover={reduce ? undefined : { y: -3 }} transition={{ type: "spring", stiffness: 420, damping: 24 }}>
+                    <span className="mono" aria-hidden="true">{monogram(item)}</span>{item}
                   </motion.li>
                 ))}
               </ul>
