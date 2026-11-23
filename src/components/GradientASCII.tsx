@@ -444,9 +444,9 @@ const GradientASCII = ({
   intro = true,
   lightMode = false,
   fontFamily = DEFAULT_FONT,
-  dpr,
+  dpr = undefined,
   className = '',
-  style,
+  style = undefined,
   ...rest
 }) => {
   const containerRef = useRef(null);
