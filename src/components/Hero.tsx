@@ -1,73 +1,50 @@
 import { motion, useReducedMotion } from "motion/react";
-import type { Variants } from "motion/react";
 import { profile } from "../data";
-import TopographyArt from "./TopographyArt";
-
-const ease = [0.2, 0.8, 0.2, 1] as const;
-
-const letters: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.045 } },
-};
-
-const letter: Variants = {
-  hidden: { opacity: 0, y: "0.5em", rotate: 6 },
-  show: { opacity: 1, y: 0, rotate: 0, transition: { duration: 0.8, ease } },
-};
+import GradientASCII from "./GradientASCII";
 
 export default function Hero() {
   const reduce = !!useReducedMotion();
-  const lift = (i: number) =>
-    reduce
-      ? {}
-      : {
-          initial: { opacity: 0, y: 14 },
-          animate: { opacity: 1, y: 0 },
-          transition: { delay: 0.9 + i * 0.1, duration: 0.6, ease },
-        };
-
   return (
-    <div className="hero">
-      <div className="wrap">
-        <div className="copy">
-          <motion.h1
-            aria-label={profile.name}
-            variants={letters}
-            initial={reduce ? false : "hidden"}
-            animate="show"
-          >
-            {profile.name.split(" ").map((word, wi, words) => (
-              <span key={wi}>
-                <span className="w" aria-hidden="true">
-                  {[...word].map((ch, ci) => (
-                    <motion.span className="c" key={ci} variants={letter}>
-                      {ch}
-                    </motion.span>
-                  ))}
-                </span>
-                {wi < words.length - 1 ? " " : null}
-              </span>
-            ))}
-          </motion.h1>
-
-          <motion.p className="role" {...lift(0)}>
-            {profile.role}
-          </motion.p>
-
-          <motion.div className="cta" {...lift(1)}>
-            <a className="btn primary" href="#work">
-              See my projects
-            </a>
-            <a className="btn" href="#contact">
-              Get in touch
-            </a>
-          </motion.div>
-        </div>
-
-        <motion.div className="art-wrap" {...lift(2)}>
-          <TopographyArt />
-        </motion.div>
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-field" aria-hidden="true">
+        <GradientASCII
+          colors={["#143b70", "#6ea8d7", "#e6f4ff", "#38bdf8"]}
+          shape="horizon"
+          characters=" .:+=xX8#@"
+          cellSize={17}
+          density={0.72}
+          glyphOpacity={0.72}
+          gradientOpacity={0.38}
+          glow={0.18}
+          flicker={0.08}
+          flow={0.26}
+          speed={reduce ? 0 : 0.42}
+          grain={0.035}
+          mouseInteraction={!reduce}
+          clickEffect="none"
+        />
       </div>
-    </div>
+      <div className="wrap hero-inner">
+        <motion.div className="hero-copy" initial={reduce ? false : { opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: [0.2, 0.8, 0.2, 1] }}>
+          <p className="eyebrow"><span className="status-dot" /> {profile.eyebrow}</p>
+          <h1 id="hero-title">Building systems<br /><span>that ship.</span></h1>
+          <p className="role">{profile.role}</p>
+          <p className="intro">{profile.intro}</p>
+          <div className="cta">
+            <a className="btn primary" href="#work">Explore my work <span aria-hidden="true">↘</span></a>
+            <a className="btn" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="hero-meta"><span>Based in Bengaluru, India</span><span>Engineering student · 2024—2028</span></div>
+        </motion.div>
+        <div className="hero-aside" aria-label="Current engineering focus">
+          <span className="aside-label">CURRENT FOCUS / 01</span>
+          <div className="focus-line"><span>01</span><div><b>Backend systems</b><small>APIs · data · persistence</small></div></div>
+          <div className="focus-line"><span>02</span><div><b>DevOps & delivery</b><small>containers · CI/CD · cloud</small></div></div>
+          <div className="focus-line"><span>03</span><div><b>LLMOps</b><small>agents · evaluation · reliability</small></div></div>
+          <a href="https://github.com/sxb05" target="_blank" rel="noreferrer" className="github-line">GITHUB / @sxb05 <span>↗</span></a>
+        </div>
+      </div>
+      <div className="hero-bottom wrap"><span>SELECTED SYSTEMS & BUILDS</span><span>SCROLL TO EXPLORE ↓</span></div>
+    </section>
   );
 }
