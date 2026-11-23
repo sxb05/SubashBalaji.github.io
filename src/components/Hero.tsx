@@ -36,11 +36,11 @@ export default function Hero() {
           </div>
           <div className="hero-meta"><span>Based in Bengaluru, India</span><span>Engineering student · 2024—2028</span></div>
         </motion.div>
-        <div className="hero-aside" aria-label="Current engineering focus">
+        <div className="hero-aside" aria-label="Current engineering interests">
           <span className="aside-label">CURRENT FOCUS / 01</span>
-          <div className="focus-line"><span>01</span><div><b>Backend systems</b><small>APIs · data · persistence</small></div></div>
+          <div className="focus-line"><span>01</span><div><b>AI Engineering</b><small>agents · RAG · tool workflows</small></div></div>
           <div className="focus-line"><span>02</span><div><b>DevOps & delivery</b><small>containers · CI/CD · cloud</small></div></div>
-          <div className="focus-line"><span>03</span><div><b>LLMOps</b><small>agents · evaluation · reliability</small></div></div>
+          <div className="focus-line"><span>03</span><div><b>LLMOps</b><small>evaluation · reliability · cost</small></div></div>
           <a href="https://github.com/sxb05" target="_blank" rel="noreferrer" className="github-line">GITHUB / @sxb05 <span>↗</span></a>
         </div>
       </div>
