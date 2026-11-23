@@ -44,7 +44,7 @@ export default function TechStack() {
       <div className="wrap">
         <div className="section-heading">
           <div><p className="eyebrow">02 / TOOLKIT</p><h2>What I work with<span>.</span></h2></div>
-          <p className="lede">Tools I’ve used in projects and the foundations I’m actively developing across backend, infrastructure and AI applications.</p>
+          <p className="lede">Technologies I’ve used in projects, grouped around AI engineering, software foundations and production delivery.</p>
         </div>
         <div className="marquee" aria-hidden="true">
           <div className="track" ref={trackRef}>
